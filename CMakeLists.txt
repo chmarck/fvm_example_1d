@@ -11,7 +11,11 @@ set(CMAKE_CXX_STANDARD_17)
 enable_testing()
 
 add_subdirectory(src)
-add_subdirectory(lib/googletest)
+#add_subdirectory(lib/googletest)
 add_subdirectory(tst)
 
 include_directories(src)
+
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(${This} PUBLIC OpenMP::OpenMP_CXX)
+endif()
