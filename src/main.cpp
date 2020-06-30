@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include <eigen3/Eigen/Dense>
 
 /*
@@ -46,12 +47,18 @@ void build_matrix(Eigen::MatrixXd& M, Eigen::VectorXd& b, unsigned int N, double
 }
 
 void solve(Eigen::MatrixXd& M, Eigen::VectorXd& b, Eigen::VectorXd& result) {
+     std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
      result = M.colPivHouseholderQr().solve(b);
+     std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
+     std::chrono::duration<double, std::nano> solver_time = end - start;
 
+     std::cout << "Time to solve: "
+          << std::chrono::duration_cast<std::chrono::microseconds>(solver_time).count()
+          << "s" << std::endl;
 }
 
 int main(int argc, char* argv[]){
-     unsigned int N = 20;//Number of nodes
+     unsigned int N = 2E3;//Number of nodes
      double L = 0.02;    //Domain length, m
      double q = 5E6;     //Heat generation, W/m^3
      double k = 0.5;     //Thermal conductivity, W/m.K
@@ -68,5 +75,5 @@ int main(int argc, char* argv[]){
      build_matrix(M, b, N, dx, k, A, q, T_A, T_B);
 
      solve(M,b, result);
-     std::cout << result << std::endl;
+     
 }

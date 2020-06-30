@@ -6,7 +6,7 @@ Set(This PROJECT_NAME)
 
 Project(${This})
 
-set(CMAKE_CXX_STANDARD_17)
+set(CMAKE_CXX_STANDARD_20)
 
 enable_testing()
 
